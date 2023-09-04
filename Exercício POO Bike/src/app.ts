@@ -58,6 +58,8 @@ export class App{
             throw new Error('Bike is not rent')
         }
         contractBike.dateReturned = dateReturn
+
+        // Adding new methods
     }
             
 }
