@@ -2,6 +2,7 @@ import { Bike } from "./bike";
 import { Rent } from "./rent";
 import { User } from "./user";
 // import crypto from "crypto";
+import bcrypt from "bcrypt"
 
 
 export class App{
@@ -9,13 +10,30 @@ export class App{
     bikes: Bike[] = []
     rents: Rent[] = []
 
-    addUser(user: User): void{
+    async addUser(user: User): Promise<User>{
         if(this.users.some(Ruser =>{return Ruser.email === user.email})){
             throw new Error('User email already exist!')
         }
+
+        user.password = await bcrypt.hash(user.password, 10)
         this.users.push(user)
+
+        return user
     }
 
+    async userAuthenticate(userEmail: string, userPassword: string ): Promise<User>{
+        
+        const rUser = this.users.find(u => u.email === userEmail)
+        if(rUser === undefined)
+            throw new Error('User does not exist')
+        const hashedPassword = rUser.password
+
+        const passMatched = await bcrypt.compare(userPassword, hashedPassword)
+        if(!passMatched)
+            throw new Error('Password does not match')
+
+        return rUser
+    }
 
     registerBike(bike: Bike): void{
         if(this.bikes.some(Rbike => {return Rbike.id === bike.id})){
@@ -60,6 +78,22 @@ export class App{
         contractBike.dateReturned = dateReturn
 
         // Adding new methods
+        //- listagem de usuários
+        //- listagem de reservas/aluguéis
+        //- listagem de bikes
+        //- autenticação de usuário
+
     }
-            
+
+    listUser(){
+        console.log(this.users)
+    }
+    
+    listBike(){
+        console.log(this.bikes)
+    }
+
+    listRent(){
+        console.log(this.rents)
+    }           
 }
