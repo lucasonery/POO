@@ -77,12 +77,6 @@ export class App{
         }
         contractBike.dateReturned = dateReturn
 
-        // Adding new methods
-        //- listagem de usuários
-        //- listagem de reservas/aluguéis
-        //- listagem de bikes
-        //- autenticação de usuário
-
     }
 
     listUser(){
@@ -95,5 +89,10 @@ export class App{
 
     listRent(){
         console.log(this.rents)
-    }           
+    }      
+    
+    getLocation(lat: number, lon: number, bike: Bike){
+        bike.coords.push(lat)
+        bike.coords.push(lon)
+    }
 }

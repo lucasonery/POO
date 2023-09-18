@@ -5,6 +5,7 @@ export class Bike{
         public bodySize:number,
         public maxLoad:number,
         public rate:number,
-        public id:number
+        public id:number,
+        public coords: number[] = [],
     ){}
 }
